@@ -1,3 +1,4 @@
+require('./config/config');
 var express = require("express");
 var bodyParser = require("body-parser");
 var { ObjectID } = require("mongodb");
@@ -76,7 +77,7 @@ app
           return res.status(404).send();
         }
 
-        res.send({todo});
+        res.send({ todo });
       })
       .catch(err => res.status(404).send());
   })
