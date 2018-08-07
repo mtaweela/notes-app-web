@@ -31,7 +31,7 @@ describe("POST /todos", () => {
     var text = "test todo text";
 
     request(app)
-      .post("/todos")
+      .post("/api/todos")
       .send({ text })
       .expect(200)
       .expect(res => {
@@ -54,7 +54,7 @@ describe("POST /todos", () => {
 
   it(" should not create todo with invalid body data", done => {
     request(app)
-      .post("/todos")
+      .post("/api/todos")
       .send({})
       .expect(400)
       .end((err, res) => {
@@ -75,7 +75,7 @@ describe("POST /todos", () => {
 describe("GET /todos", () => {
   it("should get all todos", done => {
     request(app)
-      .get("/todos")
+      .get("/api/todos")
       .expect(200)
       .expect(res => {
         expect(res.body.todos.length).toBe(2);
@@ -87,7 +87,7 @@ describe("GET /todos", () => {
 describe("Get /todos/:id", () => {
   it("should return todo doc", done => {
     request(app)
-      .get(`/todos/${todos[0]._id.toHexString()}`)
+      .get(`/api/todos/${todos[0]._id.toHexString()}`)
       .expect(200)
       .expect(res => {
         expect(res.body.todo.text).toBe(todos[0].text);
@@ -97,14 +97,14 @@ describe("Get /todos/:id", () => {
 
   it("should return 404 if todo not found", done => {
     request(app)
-      .get(`/todos/${new ObjectID().toHexString()}`)
+      .get(`/api/todos/${new ObjectID().toHexString()}`)
       .expect(404)
       .end(done);
   });
 
   it("should return 404 if non object id", done => {
     request(app)
-      .get(`/todos/123`)
+      .get(`/api/todos/123`)
       .expect(404)
       .end(done);
   });
@@ -115,7 +115,7 @@ describe("Delete /todos/:id", () => {
     var hexId = todos[1]._id.toHexString();
 
     request(app)
-      .delete(`/todos/${hexId}`)
+      .delete(`/api/todos/${hexId}`)
       .expect(200)
       .expect(res => {
         expect(res.body.todo._id).toBe(hexId);
@@ -136,7 +136,7 @@ describe("Delete /todos/:id", () => {
 
   it("should return 404 if todo not found", done => {
     request(app)
-      .delete(`/todos/${new ObjectID().toHexString()}`)
+      .delete(`/api/todos/${new ObjectID().toHexString()}`)
       .expect(404)
       .end(done);
   });
@@ -144,7 +144,7 @@ describe("Delete /todos/:id", () => {
   it("should return 404 if object id is not valid", done => {
     var hexId = todos[1]._id.toHexString();
     request(app)
-      .delete(`/todos/123`)
+      .delete(`/api/todos/123`)
       .expect(404)
       .end(done);
   });
@@ -156,7 +156,7 @@ describe("PUT /todos/:id", () => {
     var text = "this should be the new text";
 
     request(app)
-      .put(`/todos/${hexId}`)
+      .put(`/api/todos/${hexId}`)
       .send({
         completed: true,
         text
@@ -175,7 +175,7 @@ describe("PUT /todos/:id", () => {
     var text = "this should be the new text!!";
 
     request(app)
-      .put(`/todos/${hexId}`)
+      .put(`/api/todos/${hexId}`)
       .send({
         completed: false,
         text
