@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcrypt = require('bcryptjs');
 
 let UserSchema = new mongoose.Schema({
     email: { 
@@ -52,6 +53,8 @@ UserSchema.methods.generateAuthToken = function() {
     });
 };
 
+// model methods
+
 UserSchema.statics.findByToken = function(token) {
     let User = this;
     let decoded;
@@ -68,6 +71,22 @@ UserSchema.statics.findByToken = function(token) {
         'tokens.access': 'auth'
     })
 }
+
+UserSchema.pre('save', function (next) {
+    let user = this;
+
+    if(user.isModified('password')) {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(user.password, salt, (err, hash) => {
+                user.password = hash;
+                next();
+            })
+        });
+    }else {
+        next();
+    }
+});
+
 let User = mongoose.model('User', UserSchema);
 
 module.exports = {User};
@@ -75,3 +94,4 @@ module.exports = {User};
 
 // model methods => does not requrie an individual document
 // instance method => requrie an the individual document
+// mongoose middleware => run certain code before or after certain events
