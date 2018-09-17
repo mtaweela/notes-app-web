@@ -16,7 +16,8 @@ var getAllTodos = (req, res) => {
 
 var addTodo = (req, res) => {
   var todo = new Todo({
-    text: req.body.text
+    text: req.body.text,
+    title: req.body.title
   });
 
   todo.save().then(
