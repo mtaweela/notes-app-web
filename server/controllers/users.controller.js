@@ -19,6 +19,11 @@ var addUser = (req, res ) => {
         });
 };
 
+let getMe = (req, res) => {
+    res.send(req.user);
+}
+
 module.exports = {
-    addUser: addUser,
+    addUser,
+    getMe
 };

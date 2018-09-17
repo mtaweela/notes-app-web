@@ -1,9 +1,11 @@
 var express = require("express");
 var router = express.Router();
 
-var usersController = require('../controllers/users.controller')
+var usersController = require('../controllers/users.controller');
+let {authenticate} = require('./../middleware/authenticate.middleware');
 
 router
+    .get("/me", authenticate, usersController.getMe)
     .post("/", usersController.addUser);
 
 module.exports = router;
