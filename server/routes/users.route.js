@@ -6,6 +6,7 @@ let {authenticate} = require('./../middleware/authenticate.middleware');
 
 router
     .get("/me", authenticate, usersController.getMe)
-    .post("/", usersController.addUser);
+    .post("/", usersController.addUser)
+    .post("/login", usersController.login)
 
 module.exports = router;

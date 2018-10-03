@@ -23,7 +23,21 @@ let getMe = (req, res) => {
     res.send(req.user);
 }
 
+let login = (req, res) => {
+    let body = _.pick(req.body, ['email', 'password']);
+
+    User.findByCredintials(body.email, body.password)
+        .then(user => {
+            return user.generateAuthToken().then(token => {
+                res.header('x-auth', token).send(user);
+            })
+        }).catch(err => {
+            res.status(400).send();
+        })
+}
+
 module.exports = {
     addUser,
-    getMe
+    getMe,
+    login
 };
