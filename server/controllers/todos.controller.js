@@ -4,7 +4,9 @@ var _ = require("lodash");
 var { Todo } = require("./../models/todos");
 
 var getAllTodos = (req, res) => {
-  Todo.find().then(
+  Todo.find({
+    _creator: req.user._id
+  }).then(
     todos => {
       res.send({ todos });
     },
@@ -17,7 +19,8 @@ var getAllTodos = (req, res) => {
 var addTodo = (req, res) => {
   var todo = new Todo({
     text: req.body.text,
-    title: req.body.title
+    title: req.body.title,
+    _creator: req.user._id
   });
 
   todo.save().then(
@@ -37,7 +40,10 @@ var getOneTodo = (req, res) => {
     return res.status(404).send();
   }
 
-  Todo.findById(id)
+  Todo.findOne({
+    _id: id,
+    _creator: req.user._id
+  })
     .then(todo => {
       if (!todo) {
         return res.status(404).send();
@@ -64,7 +70,7 @@ var updateOneTodo = (req, res) => {
     body.completedAt = null;
   }
 
-  Todo.findByIdAndUpdate(id, { $set: body }, { new: true })
+  Todo.findOneAndUpdate({_id: id, _creator: req.user._id}, { $set: body }, { new: true })
     .then(todo => {
       if (!todo) {
         return res.status(404).send();
@@ -82,7 +88,10 @@ var deleteOneTodo = (req, res) => {
     return res.status(404).send();
   }
 
-  Todo.findByIdAndRemove(id)
+  Todo.findOneAndRemove({
+    _id: id,
+    _creator: req.user._id
+  })
     .then(todo => {
       if (!todo) {
         return res.status(404).send();
