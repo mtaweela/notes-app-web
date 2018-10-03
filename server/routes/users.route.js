@@ -8,5 +8,6 @@ router
     .get("/me", authenticate, usersController.getMe)
     .post("/", usersController.addUser)
     .post("/login", usersController.login)
+    .delete('/me/token', authenticate, usersController.logout)
 
 module.exports = router;
