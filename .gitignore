@@ -1,2 +1,7 @@
 node_modules
-playground
+
+*~
+server/config/config.json
+
+server/public/images/
+data/
