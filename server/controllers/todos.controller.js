@@ -51,7 +51,7 @@ var getOneTodo = (req, res) => {
 
 var updateOneTodo = (req, res) => {
   var id = req.params.id;
-  var body = _.pick(req.body, ["text", "completed"]);
+  var body = _.pick(req.body, ["title", "text", "completed"]);
 
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
